@@ -14,7 +14,7 @@ const PokemonList = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150');
       const data = await response.json();
       setPokemons(data.results);
     } catch (error) {
@@ -30,6 +30,7 @@ const PokemonList = () => {
           <tr>
             <th>Nombre</th>
             <th>URL</th>
+            <th>Imagen</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +38,7 @@ const PokemonList = () => {
             <tr key={index}>
               <td>{pokemon.name}</td>
               <td>{pokemon.url}</td>
+              <td><img src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+(index+1)+".png"} alt="" /></td>
             </tr>
           ))}
         </tbody>
