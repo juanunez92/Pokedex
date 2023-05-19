@@ -2,7 +2,7 @@
 //Create a new component "PokemonList". For the moment, this component renders a table with static values (let's say: Bulbasaur, Ivysaur and Venusaur), with 3 columns: #id, #image, #name.
 // When clicking in one row, we can print in the console a message "console.log('I'm XXXXXXX')"
 // Then, we can edit the page.tsx file, remove the default template and just add the component there.
-
+'use client'
 import React, { useEffect, useState } from 'react';
 
 const PokemonList = () => {
