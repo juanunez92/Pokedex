@@ -4,7 +4,38 @@
 // Then, we can edit the page.tsx file, remove the default template and just add the component there.
 "use client";
 import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+import {
+  ChakraProvider,
+  extendTheme,
+  Image,
+  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  Tfoot,
+  TableCaption,
+  Button,
+  ButtonGroup,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+} from "@chakra-ui/react";
+
 
 const PokemonList = () => {
   const [pokemons, setPokemons] = useState<null | any[]>(null);
@@ -47,42 +78,76 @@ const PokemonList = () => {
   };
 
   return (
-    <div>
-      <h1>Tabla de Pokémon</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>URL</th>
-            <th>Imagen</th>
-          </tr>
-        </thead>
-        <tbody>
+    <Box>
+      <Box as="h1" fontSize="100px" mb={50}>
+        Tabla de Pokémon
+      </Box>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>Nombre</Th>
+            <Th>URL</Th>
+            <Th>Imagen</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {pokemons &&
             pokemons.map((pokemon, index) => (
-              <tr key={index} onClick={() => handlePokemonClick(pokemon.name)}>
-                <td>{pokemon.name}</td>
-                <td>{pokemon.url}</td>
-                <td>
-                  <img
+              <Tr key={index} onClick={() => handlePokemonClick(pokemon.name)}>
+                <Td>{pokemon.name}</Td>
+                <Td>{pokemon.url}</Td>
+                <Td>
+                  <Image
+                    boxSize="150px"
                     src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
                       index + 1
                     }.png`}
-                    alt=""
+                    alt="Pokemon"
                   />
-                </td>
-              </tr>
+                </Td>
+              </Tr>
             ))}
-        </tbody>
-      </table>
-      <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-        <h2>Has seleccionado:</h2>
-        <p>{selectedPokemon}</p>
-        <h2>Esta es la descripción del Pokemon:</h2>
-        <p>{pokemonDescription}</p>
-        <button onClick={() => setModalIsOpen(false)}>Cerrar</button>
-      </Modal>
-    </div>
+        </Tbody>
+      </Table>
+      <Drawer
+        isOpen={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
+        size="xs"
+      >
+        <DrawerOverlay />
+        <DrawerContent bg="white" maxW="600px">
+          <DrawerHeader
+            fontSize="60px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            p={0}
+          ></DrawerHeader>
+          <DrawerBody>
+            <Box as="h2" fontSize="50px" mb={5}>
+              Has seleccionado:
+            </Box>
+            <Box>{selectedPokemon}</Box>
+            <Box as="h2" fontSize="50px" mb={20}>
+              Descripción del Pokemon:
+            </Box>
+            <Box>{pokemonDescription}</Box>
+            <Button
+              fontSize="20px"
+              height="48px"
+              width="200px"
+              border="2px"
+              borderColor="green.500"
+              colorScheme="red"
+              mb={20}
+              onClick={() => setModalIsOpen(false)}
+            >
+              Cerrar
+            </Button>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Box>
   );
 };
 

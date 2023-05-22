@@ -1,12 +1,14 @@
-import React from 'react';
-import PokemonList from '../app/page';
+import React from "react";
+import PokemonList from "../app/page";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>Página de inicio</h1>
-      <PokemonList />
-    </div>
+    <ChakraProvider>
+      <div>
+        <PokemonList />
+      </div>
+    </ChakraProvider>
   );
 };
 
