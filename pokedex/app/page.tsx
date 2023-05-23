@@ -34,26 +34,34 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
+  Select,
 } from "@chakra-ui/react";
-
 
 const PokemonList = () => {
   const [pokemons, setPokemons] = useState<null | any[]>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [pokemonDescription, setPokemonDescription] = useState("");
-
+  const [Page, setPage] = useState(15);
+  const [currentPage, setCurrentPage] = useState(1);
+  const PageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setPage(Number(event.target.value));
+    setCurrentPage(1);
+  };
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(currentPage, Page);
+  }, [currentPage,Page]);
 
-  const fetchData = async () => {
+  const fetchData = async (currenPage:number,Page:number) => {
     try {
       const response = await fetch(
         "https://pokeapi.co/api/v2/pokemon?limit=150"
       );
       const data = await response.json();
-      setPokemons(data.results);
+      const startPage = (currentPage - 1) * Page;
+      const endPage = startPage + Page;
+      const paginatedPokemons = data.results.slice(0, endPage);
+      setPokemons(paginatedPokemons);
     } catch (error) {
       console.log("Error fetching data:", error);
     }
@@ -62,6 +70,8 @@ const PokemonList = () => {
   const handlePokemonClick = async (pokemonName: string) => {
     setSelectedPokemon(pokemonName);
     setModalIsOpen(true);
+    setCurrentPage(1);
+   
 
     try {
       const response = await fetch(
@@ -82,6 +92,14 @@ const PokemonList = () => {
       <Box as="h1" fontSize="100px" mb={50}>
         Tabla de Pokémon
       </Box>
+      <Box>Cantidad de Pokemones</Box>
+      <Select value={Page} onChange={PageChange}>
+        <option value={15}>15</option>
+        <option value={30}>30</option>
+        <option value={50}>50</option>
+        <option value={100}>100</option>
+        <option value={150}>150</option>
+      </Select>
       <Table>
         <Thead>
           <Tr>
