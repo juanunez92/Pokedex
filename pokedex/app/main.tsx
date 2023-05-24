@@ -5,11 +5,13 @@ import { ChakraProvider } from "@chakra-ui/react";
 const HomePage = () => {
   return (
     <ChakraProvider>
-      <div>
+      
         <PokemonList />
-      </div>
+      
     </ChakraProvider>
   );
 };
 
 export default HomePage;
+
+

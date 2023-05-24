@@ -50,17 +50,17 @@ const PokemonList = () => {
   };
   useEffect(() => {
     fetchData(currentPage, Page);
-  }, [currentPage,Page]);
+  }, [currentPage, Page]);
 
-  const fetchData = async (currenPage:number,Page:number) => {
+  const fetchData = async (currenPage: number, Page: number) => {
     try {
       const response = await fetch(
-        "https://pokeapi.co/api/v2/pokemon?limit=150"
+        "https://pokeapi.co/api/v2/pokemon?limit=251"
       );
       const data = await response.json();
       const startPage = (currentPage - 1) * Page;
       const endPage = startPage + Page;
-      const paginatedPokemons = data.results.slice(0, endPage);
+      const paginatedPokemons = data.results.slice(startPage, endPage);
       setPokemons(paginatedPokemons);
     } catch (error) {
       console.log("Error fetching data:", error);
@@ -71,7 +71,6 @@ const PokemonList = () => {
     setSelectedPokemon(pokemonName);
     setModalIsOpen(true);
     setCurrentPage(1);
-   
 
     try {
       const response = await fetch(
@@ -95,11 +94,39 @@ const PokemonList = () => {
       <Box>Cantidad de Pokemones</Box>
       <Select value={Page} onChange={PageChange}>
         <option value={15}>15</option>
-        <option value={30}>30</option>
+        <option value={20}>20</option>
         <option value={50}>50</option>
         <option value={100}>100</option>
         <option value={150}>150</option>
       </Select>
+      <Button
+        fontSize="20px"
+        height="48px"
+        width="200px"
+        border="2px"
+        colorScheme="red"
+        mt={5}
+        mb={5}
+        onClick={() => setCurrentPage(currentPage - 1)}
+        isDisabled={currentPage === 1}
+      >
+        Página anterior
+      </Button>
+      <Button
+        fontSize="20px"
+        height="48px"
+        width="200px"
+        border="2px"
+        colorScheme="red"
+        mt={5}
+        mb={5}
+        ml={5}
+        onClick={() => setCurrentPage(currentPage + 1)}
+        isDisabled={!pokemons || pokemons.length < Page || currentPage === Math.ceil(251 / Page)}
+      >
+        Siguiente página
+      </Button>
+
       <Table>
         <Thead>
           <Tr>
@@ -110,21 +137,28 @@ const PokemonList = () => {
         </Thead>
         <Tbody>
           {pokemons &&
-            pokemons.map((pokemon, index) => (
-              <Tr key={index} onClick={() => handlePokemonClick(pokemon.name)}>
-                <Td>{pokemon.name}</Td>
-                <Td>{pokemon.url}</Td>
-                <Td>
-                  <Image
-                    boxSize="150px"
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
-                      index + 1
-                    }.png`}
-                    alt="Pokemon"
-                  />
-                </Td>
-              </Tr>
-            ))}
+            pokemons.map((pokemon, index) => {
+              const pokemonId = pokemon.url.split("/").slice(-2, -1)[0];
+              const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
+
+              return (
+                <Tr
+                  key={index}
+                  onClick={() => handlePokemonClick(pokemon.name)}
+                >
+                  <Td>{pokemon.name}</Td>
+                  <Td>{pokemon.url}</Td>
+                  <Td>
+                    <Image
+                      key={pokemon.name}
+                      boxSize="150px"
+                      src={imageUrl}
+                      alt="Pokemon"
+                    />
+                  </Td>
+                </Tr>
+              );
+            })}
         </Tbody>
       </Table>
       <Drawer
