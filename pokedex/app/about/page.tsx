@@ -1,11 +1,5 @@
-//  I think we can start with:
-//Create a new component "PokemonList". For the moment, this component renders a table with static values (let's say: Bulbasaur, Ivysaur and Venusaur), with 3 columns: #id, #image, #name.
-// When clicking in one row, we can print in the console a message "console.log('I'm XXXXXXX')"
-// Then, we can edit the page.tsx file, remove the default template and just add the component there.
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from 'next/link';
-
 
 import {
   ChakraProvider,
@@ -41,7 +35,7 @@ import {
   
 } from "@chakra-ui/react";
 
-const PokemonList = () => {
+const Pokedex = () => {
   const [pokemons, setPokemons] = useState<null | any[]>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -93,9 +87,8 @@ const PokemonList = () => {
   return (
     <Box>
       <Box as="h1" fontSize="100px" mb={50}>
-        Tabla de Pokémon
+        OJETE MORENO
       </Box>
-      <Box><Link href="/about">PULSAR E IR A LA OTRA PÁGINA</Link></Box>
       <Box>Cantidad de Pokemones</Box>
       <Select value={Page} onChange={PageChange}>
         <option value={15}>15</option>
@@ -208,4 +201,4 @@ const PokemonList = () => {
   );
 };
 
-export default PokemonList;
+export default Pokedex;
