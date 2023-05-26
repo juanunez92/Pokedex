@@ -4,7 +4,8 @@
 // Then, we can edit the page.tsx file, remove the default template and just add the component there.
 "use client";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from 'next/link';
+
 
 import {
   ChakraProvider,
@@ -94,7 +95,7 @@ const PokemonList = () => {
       <Box as="h1" fontSize="100px" mb={50}>
         Tabla de Pokémon
       </Box>
-      <Box><Link to="/pokedex">Ir a la Pokédex</Link></Box>
+      <Box><Link href="/about">PULSAR E IR A LA OTRA PÁGINA</Link></Box>
       <Box>Cantidad de Pokemones</Box>
       <Select value={Page} onChange={PageChange}>
         <option value={15}>15</option>
