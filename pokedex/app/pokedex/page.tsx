@@ -1,11 +1,7 @@
-//  I think we can start with:
-//Create a new component "PokemonList". For the moment, this component renders a table with static values (let's say: Bulbasaur, Ivysaur and Venusaur), with 3 columns: #id, #image, #name.
-// When clicking in one row, we can print in the console a message "console.log('I'm XXXXXXX')"
-// Then, we can edit the page.tsx file, remove the default template and just add the component there.
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from 'next/link';
-import {useRouter} from 'next/router';
+import Link from "next/link";
+
 
 import {
   ChakraProvider,
@@ -38,17 +34,16 @@ import {
   DrawerContent,
   DrawerCloseButton,
   Select,
-  
+  Flex,
 } from "@chakra-ui/react";
 
-const pURL = 'http://localhost:3000/pokedex/${id}';
 
-const PokemonList = () => {
+const Pokedex = () => {
   const [pokemons, setPokemons] = useState<null | any[]>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [pokemonDescription, setPokemonDescription] = useState("");
-  const [Page, setPage] = useState(15);
+  const [Page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const PageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setPage(Number(event.target.value));
@@ -95,17 +90,39 @@ const PokemonList = () => {
   return (
     <Box>
       <Box as="h1" fontSize="100px" mb={50}>
-        Tabla de Pokémon
+        POKEDEX INDIVIDUAL
       </Box>
-      <Box><Button><Link href="/pokedex">PULSAR E IR A LA OTRA PÁGINA</Link></Button></Box>
-      <Box>Cantidad de Pokemones</Box>
-      <Select value={Page} onChange={PageChange}>
-        <option value={15}>15</option>
-        <option value={20}>20</option>
-        <option value={50}>50</option>
-        <option value={100}>100</option>
-        <option value={150}>150</option>
-      </Select>
+      <Box>
+        <Button><Link href="/">PULSAR E IR A LA OTRA PÁGINA</Link></Button>
+      </Box>
+      {pokemons &&
+        pokemons.map((pokemon, index) => {
+          const pokemonId = pokemon.url.split("/").slice(-2, -1)[0];
+          const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
+
+          return (
+            <Flex
+              key={index}
+              height="50vh"
+              alignItems="center"
+              justifyContent="center"
+              flexDirection="column"
+              mt={25}
+              mb={10}
+            >
+              <Box mb={4} fontSize="50px" fontWeight="bold">
+              {pokemon.name}
+            </Box>
+              <Image
+                boxSize="500px"
+                src={imageUrl}
+                alt="Pokemon"
+                onClick={() => handlePokemonClick(pokemon.name)}
+                cursor="pointer"
+              />
+            </Flex>
+          );
+        })}
       <Button
         fontSize="20px"
         height="48px"
@@ -114,11 +131,13 @@ const PokemonList = () => {
         colorScheme="red"
         mt={5}
         mb={5}
+        ml={340}
         onClick={() => setCurrentPage(currentPage - 1)}
         isDisabled={currentPage === 1}
       >
-        Página anterior
+        Pokémon anterior
       </Button>
+
       <Button
         fontSize="20px"
         height="48px"
@@ -129,45 +148,15 @@ const PokemonList = () => {
         mb={5}
         ml={5}
         onClick={() => setCurrentPage(currentPage + 1)}
-        isDisabled={!pokemons || pokemons.length < Page || currentPage === Math.ceil(251 / Page)}
+        isDisabled={
+          !pokemons ||
+          pokemons.length < Page ||
+          currentPage === Math.ceil(251 / Page)
+        }
       >
-        Siguiente página
+        Pokémon Siguiente
       </Button>
 
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>Nombre</Th>
-            <Th>URL</Th>
-            <Th>Imagen</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {pokemons &&
-            pokemons.map((pokemon, index) => {
-              const pokemonId = pokemon.url.split("/").slice(-2, -1)[0];
-              const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
-
-              return (
-                <Tr
-                  key={index}
-                  onClick={() => handlePokemonClick(pokemon.name)}
-                >
-                  <Td>{pokemon.name}</Td>
-                  <Td>{pokemon.url}</Td>
-                  <Td>
-                    <Image
-                      key={pokemon.name}
-                      boxSize="150px"
-                      src={imageUrl}
-                      alt="Pokemon"
-                    />
-                  </Td>
-                </Tr>
-              );
-            })}
-        </Tbody>
-      </Table>
       <Drawer
         isOpen={modalIsOpen}
         onClose={() => setModalIsOpen(false)}
@@ -210,4 +199,4 @@ const PokemonList = () => {
   );
 };
 
-export default PokemonList;
+export default Pokedex;
