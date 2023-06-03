@@ -1,23 +1,23 @@
 "use client";
-import { Box,Button,Input } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+
+import { ChakraProvider } from "@chakra-ui/react";
+import Counter from "./button";
+
 
 const Exercise = () => {
-  const clickButton = () => {
+    function nada(){
+            return 4;
+    }
 
-  }
 
-return(
-<Box>
-
-<Button>Presiona para calcular</Button>
-<Input type='number'></Input>
-</Box>
-);
-
+  return (
+    <>
+      <ChakraProvider>
+        <Counter initValue={1} initSum={1} initF={nada}/>
+        <Counter initValue={5} initSum={5} initF={nada}/>
+      </ChakraProvider>
+    </>
+  );
 };
-
-
-
 
 export default Exercise;

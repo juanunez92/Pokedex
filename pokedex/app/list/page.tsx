@@ -1,14 +1,15 @@
 "use client";
 
 import { ChakraProvider } from "@chakra-ui/react";
-import Counter from "./pokedex";
-import Pokedex from "./pokedex";
+import Counter from "./listPoke";
+import PokemonList from "./listPoke";
 
 const Exercise = () => {
   return (
     <>
       <ChakraProvider>
-        <Pokedex />
+        
+        <PokemonList />
       </ChakraProvider>
     </>
   );
